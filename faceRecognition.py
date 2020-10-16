@@ -2,18 +2,15 @@ import cv2
 import os
 import numpy as np
 
-#This module contains all common functions used in tester.py file
+#This module contains all common functions that are called in tester.py file
 
 
-#read image, convert it into grayscale and return it
+#Given an image below function returns rectangle for face detected alongwith gray scale image
 def faceDetection(test_img):
-    #convert image into grayscale
-    gray_img=cv2.cvtColor(test_img,cv2.COLOR_BGR2GRAY)
-    #Import haarcascade classifier
-    face_haar_cascade=cv2.CascadeClassifier('E:\\TRY ON VIRTUAL SOFTWARE\\Step 1 Face Recognition\\haarcascade_frontalface_default.xml')
-    #Detect multiscale
-    faces=face_haar_cascade.detectMultiScale(gray_img,scaleFactor=1.3,minNeighbors=5)
-    #return resultant image
+    gray_img=cv2.cvtColor(test_img,cv2.COLOR_BGR2GRAY)#convert color image to grayscale
+    face_haar_cascade=cv2.CascadeClassifier("E:\\TRY ON VIRTUAL SOFTWARE\\Step 1 Face Recognition\\haarcascade_frontalface_default.xml")#Load haar classifier
+    faces=face_haar_cascade.detectMultiScale(gray_img,scaleFactor=1.30,minNeighbors=5)#detectMultiScale returns rectangles
+
     return faces,gray_img
 
 #Given a directory below function returns part of gray_img which is face alongwith its label/ID
@@ -24,34 +21,22 @@ def labels_for_training_data(directory):
     for path,subdirnames,filenames in os.walk(directory):
         for filename in filenames:
             if filename.startswith("."):
-                #Skipping files that startwith .
-                print("Skipping system file whose name start with . ") 
+                print("Skipping system file whose name start with . ") #Skipping files that startwith .
                 continue
-            
-            #fetching subdirectory names
-            id=os.path.basename(path)
-            #fetching image path
-            img_path=os.path.join(path,filename)
-            #print image path and ID
+
+            id=os.path.basename(path)#fetching subdirectory names
+            img_path=os.path.join(path,filename)#fetching image path
             print("Image path : ",img_path)
             print("ID : ",id)
-            #load image serially
-            test_img=cv2.imread(img_path)
+            test_img=cv2.imread(img_path)#loading each image one by one
             if test_img is None:
                 print("Image is not loaded properly")
                 continue
-                
-                
-            #Calling faceDetection function to return faces detected in particular image
-            faces_rect,gray_img=faceDetection(test_img)
-            
-            #if more than one faces are detected in any image skip it
+            faces_rect,gray_img=faceDetection(test_img)#Calling faceDetection function to return faces detected in particular image
             if len(faces_rect)!=1:
-               continue
+               continue #Since we are assuming only single person images are being fed to classifier
             (x,y,w,h)=faces_rect[0]
-            
-            #cropping region of interest i.e. face area from grayscale image
-            roi_gray=gray_img[y:y+w,x:x+h]
+            roi_gray=gray_img[y:y+w,x:x+h]#cropping region of interest i.e. face area from grayscale image
             faces.append(roi_gray)
             faceID.append(int(id))
     return faces,faceID
