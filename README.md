@@ -9,4 +9,4 @@ This module simply perform as:
 4. If match doesn't exist, label will not mark.
 
 
-"Test" and "Train" folder contain the images that are to be used in image-face-detection module.
+"Test" and "Train" folder contain the images that are to be used in *imag-face-detection* module.
