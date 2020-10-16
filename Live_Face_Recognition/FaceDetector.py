@@ -51,10 +51,10 @@ webcam=cv2.VideoCapture(0)
 cnt=0
 while True: #Capturing 30 images
     (ret,img)=webcam.read() #read camera
-    gray_img=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY) # grayscale img
+    gray_img=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)              # grayscale img
     facesFound= face_cascade.detectMultiScale(gray_img,1.32,3) #get coordinates of faces
     for (x,y,w,h) in facesFound:
-        cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2) #draw rectangle arround faces found
+        cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)         #draw rectangle arround faces found
         faceFound=gray_img[y:y+h,x:x+w] #crop face part for dataset
         face_resized=cv2.resize(faceFound,(width,height))
         label,confidence= face_recognizer_model.predict(face_resized)
