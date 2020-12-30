@@ -10,3 +10,5 @@ This module simply perform as:
 
 
 "Test" and "Train" folder contain the images that are to be used in *imag-face-detection* module.
+
+Image face detection is done using computer vision concepts.
